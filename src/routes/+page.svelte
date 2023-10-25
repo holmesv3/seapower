@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Drawer, AppShell, AppBar, drawerStore } from "@skeletonlabs/skeleton";
 	import Navigation from "$lib/components/Navigation.svelte";
-
+	import {Github} from "@inqling/svelte-icons/simple-icons"	
+	
 	function drawerOpen(): void { 
 		drawerStore.open({});
 	}
@@ -26,6 +27,11 @@
 					</button>
 					<strong class="text-xl uppercase">Seapower</strong>
 				</div>
+			</svelte:fragment>
+			<svelte:fragment slot="trail">
+				<a class="btn-icon-sm"  href="https://github.com/holmesv3/seapower" >
+					<Github />
+				</a>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
@@ -53,12 +59,5 @@
 
 	</div>
 		
-	<!-- ---- / ---- -->
-	<svelte:fragment slot="pageFooter">
-		<div class="m-2">
-			<a class="btn variant-filled-tertiary" href="https://github.com/holmesv3/seapower">GitHub</a>
-		</div>
-	</svelte:fragment>
-	<!-- (footer) -->
 		
 </AppShell> 
