@@ -1,38 +1,25 @@
-# create-svelte
+# Seapower II code
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+![Vercel App](https://img.shields.io/badge/:badgeContent?link=https://seapower.vercel.app/)
 
-## Creating a project
+This project is the result of me getting [nerd sniped](https://en.wikipedia.org/wiki/Nerd_sniping)
+by a friend of mine, and wanting an excuse to learn a javascript framework. 
 
-If you're seeing this, you've probably already done this step. Congrats!
+If you look through the code and think that it's terrible, that's because it probably is. 
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+# Running the app
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This is not guaranteed to be fully functional - in fact, quite the opposite is true!
 
-## Developing
+The app is built using Svelte, and can be deployed as a web app (see the [Vercel App](https://seapower.vercel.app/) above), or if you pull the source code, you can use Tauri 
+to build for local use.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+If building from source, simply use 
+```sh
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```
+Or, if building with Tauri,
+```sh
+npm run tauri dev
 ```
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
