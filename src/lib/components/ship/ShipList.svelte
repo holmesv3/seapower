@@ -20,7 +20,7 @@
     let ship_idx: number = 0;
     let ships_for_cntry: ListItem[] = [];
     for (let index = 0; index < ships.length; index++) {
-        const ship = ships[index];
+        var ship = ships[index];
         ships_for_cntry.push(new ListItem(index, ship.name))
     }
 

@@ -1,6 +1,5 @@
-# Seapower II code
-
-![Vercel App](https://img.shields.io/badge/?link=https://seapower.vercel.app/)
+# Seapower II
+[![Vercel App](https://badgen.net/badge/icon/vercel?icon=vercel&label)](https://seapower.vercel.app)
 
 This project is the result of me getting [nerd sniped](https://en.wikipedia.org/wiki/Nerd_sniping)
 by a friend of mine, and wanting an excuse to learn a javascript framework. 

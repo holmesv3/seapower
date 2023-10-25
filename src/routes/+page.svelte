@@ -37,17 +37,28 @@
 	</svelte:fragment>
 	<!-- Router Slot -->
 	<div class="container mx-auto p-8 space-y-8">
-		<h1 class="h1">Hello Skeleton</h1>
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-		<section>
-			<a class="btn variant-filled-primary" href="https://kit.svelte.dev/">SvelteKit</a>
-			<a class="btn variant-filled-secondary" href="https://tailwindcss.com/">Tailwind</a>
-			<a class="btn variant-filled-tertiary" href="https://github.com/">GitHub</a>
-		</section>
+		<h1 class="h1">Welcome to Seapower</h1>
+		<p>
+			This is the home page, which isn't much.
+		</p>
+		<p>
+			Eventually I'll probably have some instructions or something here
+		</p>
+		<p>
+			Select 'Play Game' on the left to start the game setup 
+		</p>
+		<p>
+			(spoiler alert, it probably won't work right)
+		</p>
+
 	</div>
 		
 	<!-- ---- / ---- -->
-	<!-- <svelte:fragment slot="pageFooter">Page Footer</svelte:fragment> -->
+	<svelte:fragment slot="pageFooter">
+		<div class="m-2">
+			<a class="btn variant-filled-tertiary" href="https://github.com/holmesv3/seapower">GitHub</a>
+		</div>
+	</svelte:fragment>
 	<!-- (footer) -->
 		
 </AppShell> 
