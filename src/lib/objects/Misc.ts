@@ -18,11 +18,13 @@
 import type { Writable } from 'svelte/store';
 import { TreeView, localStorageStore } from '@skeletonlabs/skeleton';
 
-interface IDictionary<TValue> {
-    [id: string]: TValue;
+
+export interface Hack {
+    [id: string]: Ship[];
 }
 
 import type { Ship } from "$lib/objects/Ship"
+
 export class ShipsByCountry {
     public USA: Ship[] = [];
     public GB: Ship[] = [];
@@ -32,7 +34,6 @@ export class ShipsByCountry {
     public JPN: Ship[] = [];
     public IT: Ship[] = [];
     public GER: Ship[] = [];
-    public Hack: IDictionary<Ship[]> = {};
     constructor(ships: Ship[]) {
         for (let index = 0; index < ships.length; index++) {
             let ship = ships[index];
@@ -67,14 +68,6 @@ export class ShipsByCountry {
                     break;
             }
         }
-        this.Hack["USA"] = this.USA; 
-        this.Hack["GB"] = this.GB; 
-        this.Hack["FR"] = this.FR; 
-        this.Hack["CN"] = this.CN; 
-        this.Hack["RUS"] = this.RUS; 
-        this.Hack["JPN"] = this.JPN; 
-        this.Hack["IT"] = this.IT; 
-        this.Hack["GER"] = this.GER; 
     }
 }
 
@@ -82,6 +75,3 @@ export class ShipsByCountry {
 export interface ShipsByCountryType {
     [id: string]: Ship[];
 }
-
-const _def = new ShipsByCountry([]);
-export const gameStateStore: Writable<ShipsByCountry> = localStorageStore('game_state', _def);

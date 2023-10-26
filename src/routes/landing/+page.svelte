@@ -1,6 +1,7 @@
 <script lang='ts'>
     import { get } from "svelte/store"
-    import { ShipsByCountry, gameStateStore } from "$lib/objects/Misc";
+    import type { Hack, ShipsByCountry } from "$lib/objects/Misc";
+    import  { type GameState, gameStateStore } from "$lib/objects/GameState";
     import type { Ship} from "$lib/objects/Ship";
     import ShipCard from "$lib/components/ship/ShipCard.svelte";
 	import { is_empty } from "svelte/internal";
@@ -11,12 +12,12 @@
     
     
     const modal: ModalSettings = {
-        type: 'prompt',
+        type: 'confirm',
         // Data
-        title: 'Enter name of file',
-        body: '?????',
+        title: 'Save game state',
+        body: 'Confirm to download a file which can be used to continue this game',
         // TRUE if confirm pressed, FALSE if cancel pressed
-        // response: (r: boolean) => console.log('response:', r),
+        response: (r: boolean) => downloadData(r),
     };
         
     // CLass for displaying the ships nicely
@@ -29,11 +30,12 @@
     
     // Determine which countries are available (ships not empty)
     let countries: string[] = [];
-    let loaded_ships: ShipsByCountry = get(gameStateStore);
-    let keys = Object.keys(loaded_ships.Hack)
+    let game_state: GameState = get(gameStateStore);
+    let loaded_ships: ShipsByCountry = game_state.ships;
+    let keys = Object.keys(loaded_ships)
     for (let index = 0; index < keys.length; index++) {
         const key: string = keys[index];;
-        if (!is_empty(loaded_ships.Hack[key])) {
+        if (!is_empty((loaded_ships as any as Hack)[key])) {
             countries.push(key);
         }
     } 
@@ -42,7 +44,7 @@
     let ship_idx: number = 0;
     let ships_for_cntry: ListItem[] = [];
     let selected: string = keys[0];
-    let ships: Ship[] = loaded_ships.Hack[selected];
+    let ships: Ship[] = (loaded_ships as any as Hack)[selected];
     for (let index = 0; index < ships.length; index++) {
         let ship = ships[index];
         ships_for_cntry.push(new ListItem(index, ship.name));
@@ -54,25 +56,28 @@
         ships_for_cntry = [];
         
         // 
-        ships = loaded_ships.Hack[selected];
+        ships = (loaded_ships as any as Hack)[selected];
         for (let index = 0; index < ships.length; index++) {
             let ship = ships[index];            
             ships_for_cntry.push(new ListItem(index, ship.name));
         }
     }
     
-    function saveData() {
+    function saveDataModal() {
         modalStore.trigger(modal);
     }
     
-    
-    function downloadData(blob: Blob, name: string) {
-		var a = document.createElement('a');
-		document.body.append(a);
-		a.download = name;
-		a.href = URL.createObjectURL(blob);
-		a.click();
-		a.remove();
+    function downloadData(r: boolean) {
+        if (r) {
+            let name = "seapower_save.json";
+            let str = JSON.stringify(game_state);
+            var a = document.createElement('a');
+            document.body.append(a);
+            a.download = name;
+            a.href = URL.createObjectURL(new Blob([str]));
+            a.click();
+            a.remove();
+        }
 	}
     
 </script>
@@ -87,7 +92,7 @@
 				</div>
             </svelte:fragment>
 			<svelte:fragment slot="trail">
-				<button class="btn-icon-md" on:click={saveData}>
+				<button class="btn-icon-md" on:click={saveDataModal}>
 					<Fa icon={faFloppyDisk} />
                 </button>
 			</svelte:fragment>

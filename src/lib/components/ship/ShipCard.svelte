@@ -11,20 +11,26 @@
         title: 'Please Confirm',
         body: 'Are you sure you wish to proceed?',
         // TRUE if confirm pressed, FALSE if cancel pressed
-        // response: (r: boolean) => console.log('response:', r),
+        response: (r: boolean) => onClickFireConfirm(r),
     };
     
-    function onClickFireHandle(e: Event) {
+    function onClickFireModal() {
         modalStore.trigger(modal);
         console.log(modal.response);
-        ship.turn_taken = true
     }
+    function onClickFireConfirm(r: boolean) {
+        if (r) {
+            ship.turn_taken = true;
+        }
+    }
+    
+    
 </script>
 
 <div class="card p-4 m-2">
     <div>        
     {#if !ship.turn_taken}
-        <button class="variant-filled-error card h3 text-center p-4" on:click={onClickFireHandle}>
+        <button class="variant-filled-error card h3 text-center p-4" on:click={onClickFireModal}>
             FIRE
         </button>
     {:else}
