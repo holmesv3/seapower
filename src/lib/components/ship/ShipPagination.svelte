@@ -3,9 +3,9 @@
     import { Table, Paginator, tableMapperValues } from "@skeletonlabs/skeleton";
 
     // PaginatorSettings
-    export let source: Array<Ship>;
+    export let source: Ship[];
     let objs = tableMapperValues(source, ['name', 'country', 'status']);
-    let headers: Array<string> = [
+    let headers: string[] = [
         'Name', 
         'Country', 
         'Status'];

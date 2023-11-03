@@ -12,8 +12,7 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
-	import "flag-icons/css/flag-icons.min.css";
-			
+	import "flag-icons/css/flag-icons.min.css";			
 </script>
 <Toast />
 <Modal />

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { FileDropzone, AppBar } from '@skeletonlabs/skeleton';
     import data from "$lib/files/shipmanifest.json";
-    import type { ShipsByCountry } from "$lib/objects/Misc"
+    import type { ShipsByCountry } from "$lib/objects/Ship"
     import { is_empty } from "svelte/internal";
     import CountryShipPagination from "$lib/components/ship/ShipPagination.svelte" 
     import { TabGroup, Tab } from "@skeletonlabs/skeleton";
@@ -19,12 +19,14 @@
 
     let scale: GameScale;
     let tab_set = 0;
-    let cs_ships: ShipsByCountry = [];
+    let cs_ships: ShipsByCountry;
+    let show_table: boolean = false;
 
     function onDefault() {
         scale = data.scale;
         cs_ships = data.ships as any as ShipsByCountry;
         tab_set = 0;
+        show_table = true;
         
     }
     
@@ -36,7 +38,8 @@
             scale = state.scale;
             cs_ships = state.ships;
             gameStateStore.set(state);  
-            tab_set = 0
+            tab_set = 0;
+            show_table = true;
         }
     }
 
@@ -71,7 +74,7 @@
     </div>
 </div>
 
-{#if !is_empty(cs_ships)}
+{#if show_table}
 <div class="container mx-auto p-8 space-y-8">
     <AppBar>
         <svelte:fragment slot="lead">

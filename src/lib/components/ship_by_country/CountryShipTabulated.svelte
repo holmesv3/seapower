@@ -1,6 +1,5 @@
 <script lang="ts">
-import type { ShipsByCountry } from "$lib/objects/Misc"
-import { is_empty } from "svelte/internal";
+import type { ShipsByCountry } from "$lib/objects/Ship"
 import CountryShipPagination from "./CountryShipPagination.svelte";"./CountryShipPagination.svelte";
 import { TabGroup, Tab } from "@skeletonlabs/skeleton";
 import US from "$lib/components/flags/US.svelte";
@@ -12,36 +11,34 @@ import JP from "$lib/components/flags/JP.svelte";
 import IT from "$lib/components/flags/IT.svelte";
 import DE from "$lib/components/flags/DE.svelte";
 
-
-
 export let ships: ShipsByCountry;
 
 let tabSet: number = 0;
 </script>
 
 <TabGroup>
-    {#if !is_empty(ships.USA)}
+    {#if ships.USA}
         <Tab bind:group={tabSet} name="tab1" value={1}><US /> USA</Tab>     <!-- US -->
     {/if}
-    {#if !is_empty(ships.GB)}
+    {#if ships.GB}
         <Tab bind:group={tabSet} name="tab2" value={2}><GB /> GB</Tab>      <!-- GB --> 
     {/if}
-    {#if !is_empty(ships.FR)}
+    {#if ships.FR}
         <Tab bind:group={tabSet} name="tab3" value={3}><FR /> FR</Tab>      <!-- FR -->
     {/if}
-    {#if !is_empty(ships.CN)}
+    {#if ships.CN}
         <Tab bind:group={tabSet} name="tab4" value={4}><CN /> CN</Tab>      <!-- CN -->
     {/if}
-    {#if !is_empty(ships.RUS)}
+    {#if ships.RUS}
         <Tab bind:group={tabSet} name="tab5" value={5}><RU /> RUS</Tab>     <!-- RU -->
     {/if}
-    {#if !is_empty(ships.JPN)}
+    {#if ships.JPN}
         <Tab bind:group={tabSet} name="tab6" value={6}><JP /> JPN</Tab>     <!-- JP -->
     {/if}
-    {#if !is_empty(ships.IT)}
+    {#if ships.IT}
         <Tab bind:group={tabSet} name="tab7" value={7}><IT /> IT</Tab>      <!-- IT -->
     {/if}
-    {#if !is_empty(ships.GER)}
+    {#if ships.GER}
         <Tab bind:group={tabSet} name="tab8" value={8}><DE /> GER</Tab>     <!-- DE -->
     {/if}
 	<!-- Tab Panels --->

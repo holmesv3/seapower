@@ -1,4 +1,4 @@
-import {ShipsByCountry} from "./Misc";
+import {ShipsByCountry} from "./Ship";
 import type { Writable } from 'svelte/store';
 import { localStorageStore } from '@skeletonlabs/skeleton';
 export enum GameScale {

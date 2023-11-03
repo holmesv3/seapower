@@ -1,8 +1,7 @@
 <script lang='ts'>
     import { get } from "svelte/store"
-    import type { Hack, ShipsByCountry } from "$lib/objects/Misc";
     import  { type GameState, gameStateStore } from "$lib/objects/GameState";
-    import type { Ship} from "$lib/objects/Ship";
+    import type { Ship, Hack, ShipsByCountry} from "$lib/objects/Ship";
     import ShipCard from "$lib/components/ship/ShipCard.svelte";
 	import { is_empty } from "svelte/internal";
     import { AppBar, AppShell } from "@skeletonlabs/skeleton";
@@ -11,7 +10,8 @@
     import { modalStore, type ModalSettings } from "@skeletonlabs/skeleton";
     
     
-    const modal: ModalSettings = {
+    const modal: ModalSettings = 
+    {
         type: 'confirm',
         // Data
         title: 'Save game state',
@@ -21,7 +21,8 @@
     };
         
     // CLass for displaying the ships nicely
-    class ListItem {
+    class ListItem 
+    {
         constructor(
             public idx: number,
             public name: string

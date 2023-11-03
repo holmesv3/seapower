@@ -1,5 +1,6 @@
 <script lang='ts'>
     import type { Ship } from "$lib/objects/Ship"
+    import { fire } from "$lib/objects/Gun"
     import GunCard from "$lib/components/gun/GunCard.svelte";
     import { modalStore, type ModalSettings } from "@skeletonlabs/skeleton";
 
@@ -20,6 +21,12 @@
     }
     function onClickFireConfirm(r: boolean) {
         if (r) {
+            if (ship.primary_gun)
+                fire(ship.primary_gun);
+            if (ship.secondary_gun)
+                fire(ship.secondary_gun);
+            if (ship.tertiary_gun)
+                fire(ship.tertiary_gun);
             ship.turn_taken = true;
         }
     }
