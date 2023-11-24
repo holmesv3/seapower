@@ -1,0 +1,10 @@
+<Table interactive={true} source={{head: headers, 
+    body: objs.slice(
+        page.offset * page.limit,             
+        page.offset * page.limit + page.limit)}}
+/>
+<Paginator 
+    bind:settings={page} 
+    showFirstLastButtons="{true}" 
+    showPreviousNextButtons="{true}">
+</Paginator>
