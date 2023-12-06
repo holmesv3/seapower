@@ -1,7 +1,4 @@
 from enum import StrEnum
-from dataclasses import dataclass
-from .Ship import ShipsByCountry
-
 
 class GameScale(StrEnum):
     SM='SM'
@@ -26,10 +23,4 @@ class ShipClass(StrEnum):
     CRUISER = "Cruiser"
     SUBMARINE = "Submarine"
     CARRIER = "Carrier"
-
-
-@dataclass
-class GameState:
-    scale: GameScale
-    ships: ShipsByCountry 
     

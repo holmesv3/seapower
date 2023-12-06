@@ -1,62 +1,77 @@
-<div class="card p-4 m-2">
-    <div>        
-    {#if !ship.turn_taken}
-        <button class="variant-filled-error card h3 text-center p-4" on:click={onClickFireModal}>
-            FIRE
-        </button>
-    {:else}
-        <button class="variant-glass-warning card h3 text-center p-4">
-            Already fired
-        </button>    
-    {/if}
-    </div>
-    <div class="arrow bg-surface-100-800-token" />
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 m-1">
-        <p>ship_class: {ship.ship_class}</p>
-        <p>DV: {ship.DV}</p>
-        <p>max_speed: {ship.max_speed}</p>
-        <p>status: {ship.status}</p>
-        <p>gun_status: {ship.gun_status}</p>
-        <p>hull_status: {ship.hull_status}</p>
-        <p>torpedo_tubesize: {ship.torpedo_tubesize}</p>
-        <p>n_tube: {ship.n_tube}</p>
-        <p>n_torpedo: {ship.n_torpedo}</p>
-        <p>catapults: {ship.catapults}</p>
-        <p>aircraft_on_board: {ship.aircraft_on_board}</p>
-        <p>aircraft_in_air: {ship.aircraft_in_air}</p>
-        <p>depth_charge: {ship.depth_charge}</p>
-        <p>anti_aircraft: {ship.anti_aircraft}</p>
-        <p>mines: {ship.mines}</p>
-    </div>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles.css' %}">
 
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 m-1">
-        <div class="variant-glass-primary card">
-            <header class="card-header">Primary Gun</header>
+<div class="card border">
+    <div>        
+        {% if ship.turn_taken %}
+            <button class="h3 text-center p-4" on:click={onClickFireModal}>
+                FIRE
+            </button>
+        {% else %}
+            <button class="h3 text-center p-4">
+                Already fired
+            </button>    
+        {% endif %}
+    </div>
+    <div class="card">
+        <p>ship_class: {{ship.ship_class}}</p>
+        <p>DV: {{ship.DV}}</p>
+        <p>max_speed: {{ship.max_speed}}</p>
+        <p>status: {{ship.status}}</p>
+        <p>gun_status: {{ship.gun_status}}</p>
+        <p>hull_status: {{ship.hull_status}}</p>
+        <p>torpedo_tubesize: {{ship.torpedo_tubesize}}</p>
+        <p>n_tube: {{ship.n_tube}}</p>
+        <p>n_torpedo: {{ship.n_torpedo}}</p>
+        <p>catapults: {{ship.catapults}}</p>
+        <p>aircraft_on_board: {{ship.aircraft_on_board}}</p>
+        <p>aircraft_in_air: {{ship.aircraft_in_air}}</p>
+        <p>depth_charge: {{ship.depth_charge}}</p>
+        <p>anti_aircraft: {{ship.anti_aircraft}}</p>
+        <p>mines: {{ship.mines}}</p>
+
+        <div class="border">
+            <h3>Primary Gun</h3>
             <hr />
-            <div class="p-4">
-                <GunCard bind:gun={ship.primary_gun}/>
+            <div class="card">
+                <p>gun_size: {{ship.primary_gun.gun_size}}</p>
+                <p>n_gun: {{ship.primary_gun.n_gun}}</p>
+                <p>shell_weight: {{ship.primary_gun.shell_weight}}</p>
+                <p>range: {{ship.primary_gun.range}}</p>
+                <p>SRM: {{ship.primary_gun.SRM}}</p>
+                <p>ammo: {{ship.primary_gun.ammo}}</p>
             </div>
         </div>
-        {#if ship.secondary_gun}
-            <div class="variant-glass-secondary card">
-                <header class="card-header">Secondary Gun</header>
+        {% if ship.secondary_gun %}
+            <div class="border">
+                <h3>Secondary Gun</h3>
                 <hr />
-                <div class="p-4">
-                    <GunCard bind:gun={ship.secondary_gun}/>
+                <div class="card">
+                    <p>gun_size: {{ship.secondary_gun.gun_size}}</p>
+                    <p>n_gun: {{ship.secondary_gun.n_gun}}</p>
+                    <p>shell_weight: {{ship.secondary_gun.shell_weight}}</p>
+                    <p>range: {{ship.secondary_gun.range}}</p>
+                    <p>SRM: {{ship.secondary_gun.SRM}}</p>
+                    <p>ammo: {{ship.secondary_gun.ammo}}</p>
                 </div>
             </div>
-        {/if}
-        {#if ship.tertiary_gun}
-            <div class="variant-glass-tertiary card">
-                <header class="card-header">Tertiary Gun</header>
+        {% endif %}
+        {% if ship.tertiary_gun %}
+            <div class="border">
+                <h3> Tertiary Gun</h3>
                 <hr />
-                <div class="p-4">
-                    <GunCard bind:gun={ship.tertiary_gun}/>
+                <div class="card">
+                    <p>gun_size: {{ship.tertiary_gun.gun_size}}</p>
+                    <p>n_gun: {{ship.tertiary_gun.n_gun}}</p>
+                    <p>shell_weight: {{ship.tertiary_gun.shell_weight}}</p>
+                    <p>range: {{ship.tertiary_gun.range}}</p>
+                    <p>SRM: {{ship.tertiary_gun.SRM}}</p>
+                    <p>ammo: {{ship.tertiary_gun.ammo}}</p>
                 </div>
             </div>
-        {/if}
-    </section>
-    
-    <a class="btn variant-filled-primary" href="/init_game">DEBUG</a>
-
+        {% endif %}
+    </div>
+    <button>
+        <a href="/">DEBUG</a>
+    </button>
 </div>

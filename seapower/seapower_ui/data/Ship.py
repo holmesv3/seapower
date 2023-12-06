@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from .Gun import Gun
-from .Utils import Country
+from .Utils import Country, GameScale
 # def attack(ship: Ship, range: float): void 
 #     let dmg = 1 / range;
 #     if (ship.primary_gun)
@@ -192,3 +192,8 @@ class ShipsBySide:
         sbs.bad_guys = BadGuys(ships)
         return sbs
     
+    
+@dataclass
+class GameState:
+    scale: GameScale
+    ships: ShipsByCountry 
