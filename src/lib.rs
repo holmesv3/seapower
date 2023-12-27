@@ -1,6 +1,6 @@
 use cfg_if::cfg_if;
 pub mod app;
-pub mod comp;
+pub mod components;
 pub mod pages;
 pub mod types;
 pub mod fallback;
