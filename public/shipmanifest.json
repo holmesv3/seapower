@@ -1,12 +1,12 @@
 {
-    "scale": 1,
+    "scale": "SM",
     "ships": {
-        "USA": [
+        "usa": [
             {
                 "name": "Ship 1",
                 "ship_class": "Destroyer",
                 "country": "USA",
-                "DV": 0,
+                "dv": 0,
                 "max_speed": 10,
                 "status": 100,
                 "gun_status": 100,
@@ -19,7 +19,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -28,7 +28,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -37,7 +37,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -53,7 +53,7 @@
                 "name": "Ship 2",
                 "ship_class": "Destroyer",
                 "country": "USA",
-                "DV": 0,
+                "dv": 0,
                 "max_speed": 10,
                 "status": 100,
                 "gun_status": 100,
@@ -66,7 +66,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -75,7 +75,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -88,12 +88,12 @@
                 "turn_taken": false
             }
         ],
-        "GB": [
+        "gb": [
             {
                 "name": "Ship 9",
                 "ship_class": "Destroyer",
                 "country": "GB",
-                "DV": 0,
+                "dv": 0,
                 "max_speed": 10,
                 "status": 100,
                 "gun_status": 100,
@@ -106,7 +106,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 90000,
                     "fired": false
                 },
@@ -119,15 +119,15 @@
                 "turn_taken": false
             }
         ],
-        "FR": [],
-        "CN": [],
-        "RUS": [],
-        "JPN": [
+        "fr": [],
+        "cn": [],
+        "rus": [],
+        "jpn": [
             {
                 "name": "Ship 8",
                 "ship_class": "Destroyer",
                 "country": "JPN",
-                "DV": 0,
+                "dv": 0,
                 "max_speed": 10,
                 "status": 100,
                 "gun_status": 100,
@@ -140,7 +140,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -149,7 +149,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -158,7 +158,7 @@
                     "n_gun": 20,
                     "shell_weight": 55,
                     "range": 17500,
-                    "SRM": 75,
+                    "srm": 75,
                     "ammo": 72000,
                     "fired": false
                 },
@@ -171,7 +171,7 @@
                 "turn_taken": false
             }
         ],
-        "IT": [],
-        "GER": []
+        "it": [],
+        "ger": []
     }
 }
