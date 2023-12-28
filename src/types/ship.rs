@@ -1,3 +1,4 @@
+use leptos::*;
 use serde::Deserialize;
 
 use crate::types::gun::Gun;
@@ -41,11 +42,9 @@ impl Ship {
             self.tertiary_gun.as_mut().unwrap().fire();
         }
         self.turn_taken = true;
-    } 
-
+    }
 
     pub fn reset(&mut self) {
-        
         self.primary_gun.reset();
         if self.secondary_gun.is_some() {
             self.secondary_gun.as_mut().unwrap().reset();
@@ -53,8 +52,7 @@ impl Ship {
         if self.tertiary_gun.is_some() {
             self.tertiary_gun.as_mut().unwrap().reset();
         }
-    } 
-
+    }
 }
 
 #[derive(Deserialize, Debug, Clone, Default)]
@@ -67,12 +65,38 @@ pub struct ShipsByCountry {
     pub jpn: Option<Vec<Ship>>,
     pub it: Option<Vec<Ship>>,
     pub ger: Option<Vec<Ship>>,
-} 
+}
+#[component]
+pub fn ShipsByCountryTableComp(ships: ShipsByCountry) -> impl IntoView {
+    fn table_row(ship: Ship) -> impl IntoView {
+        view! {
+            <tr>
+                <td>{ship.name}</td>
+                <td>{ship.status}</td>
+                <td>{ship.turn_taken}</td>
+            </tr>
+        }
+    }
     
+    view!{
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Health</th>
+                <th>Turn Taken</th>
+            </tr>
+            {ships.usa.unwrap().into_iter()
+                .map(|ship| table_row(ship))
+                .collect_view()
+            }
+        </table>
+    }
+}
+
 // class Side:
-    
+
 //     _all: list[Ship]
-    
+
 //     @staticmethod
 //     def from_ships(ships: list[Ship]):
 //         raise NotImplementedError
@@ -80,10 +104,10 @@ pub struct ShipsByCountry {
 //     @staticmethod
 //     def from_ships_by_country(ships: ShipsByCountry):
 //         raise NotImplementedError
-    
-//     def get_all(self) -> list[Ship]: 
+
+//     def get_all(self) -> list[Ship]:
 //         return self._all;
-    
+
 //     def check_all(self) -> list[Ship]:
 //         """Return all ships which have actions remaning"""
 //         out = []
@@ -93,8 +117,7 @@ pub struct ShipsByCountry {
 //                 out.append(ship)
 
 //         return out
-          
-  
+
 // class GoodGuys(Side):
 //     usa: list[Ship] = []
 //     gb: list[Ship] = []
@@ -105,7 +128,7 @@ pub struct ShipsByCountry {
 //     @staticmethod
 //     def from_ships(ships: list[Ship]):
 //         gg = GoodGuys()
-//         for ship in ships: 
+//         for ship in ships:
 //             match ship.country:
 //                 case Country.USA:
 //                     gg.usa.append(ship)
@@ -130,7 +153,6 @@ pub struct ShipsByCountry {
 //         gg.rus = ships.rus
 //         gg._all = gg.usa + gg.gb + gg.fr + gg.cn + gg.rus
 //         return gg
-        
 
 // class BadGuys(Side):
 //     jpn: list[Ship] = []
@@ -140,7 +162,7 @@ pub struct ShipsByCountry {
 //     @staticmethod
 //     def from_ships(ships: list[Ship]):
 //         bg = BadGuys()
-//         for ship in ships: 
+//         for ship in ships:
 //             match ship.country:
 //                 case Country.JPN:
 //                     bg.jpn.append(ship)
@@ -159,7 +181,6 @@ pub struct ShipsByCountry {
 //         bg.ger = ships.ger
 //         bg._all = bg.jpn + bg.it + bg.ger
 //         return bg
-    
 
 // class ShipsBySide:
 //     good_guys: GoodGuys

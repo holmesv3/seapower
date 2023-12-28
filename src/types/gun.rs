@@ -15,7 +15,7 @@ impl Gun {
     pub fn fire(&mut self) {
         self.ammo -= 1.;
         self.fired = true;
-    } 
+    }
 
     pub fn is_fired(&self) -> bool {
         self.fired
@@ -23,5 +23,5 @@ impl Gun {
 
     pub fn reset(&mut self) {
         self.fired = false;
-    } 
+    }
 }

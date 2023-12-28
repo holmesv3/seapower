@@ -1,5 +1,5 @@
 [package]
-name = "leptos-seapower"
+name = "leptos_tailwind"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [[bin]]
-name = "main"
+name = "leptos_tailwind"
 path = "src/main.rs"
 
 [[bin]]
@@ -57,7 +57,7 @@ denylist = ["axum", "tokio", "tower", "tower-http", "leptos_axum"]
 skip_feature_sets = [["ssr", "hydrate"]]
 
 [package.metadata.leptos]
-bin-target = "main"
+bin-target = "leptos_tailwind"
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name
 output-name = "tailwind"
 # The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
