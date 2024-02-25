@@ -1,10 +1,10 @@
 use leptos::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::types::gun::Gun;
 use crate::types::util::Country;
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 pub struct Ship {
     pub name: String,
     pub ship_class: String,
@@ -55,7 +55,7 @@ impl Ship {
     }
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 pub struct ShipsByCountry {
     pub usa: Option<Vec<Ship>>,
     pub gb: Option<Vec<Ship>>,
@@ -77,18 +77,16 @@ pub fn ShipsByCountryTableComp(ships: ShipsByCountry) -> impl IntoView {
             </tr>
         }
     }
-    
-    view!{
+
+    view! {
         <table>
             <tr>
                 <th>Name</th>
                 <th>Health</th>
                 <th>Turn Taken</th>
             </tr>
-            {ships.usa.unwrap().into_iter()
-                .map(|ship| table_row(ship))
-                .collect_view()
-            }
+            {ships.usa.unwrap().into_iter().map(|ship| table_row(ship)).collect_view()}
+
         </table>
     }
 }

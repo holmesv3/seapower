@@ -1,26 +1,35 @@
-use leptos::*;
-use serde::Deserialize;
-use crate::types::ship::*;
+use std::str::FromStr;
 
-#[derive(Deserialize, Debug, Clone, Default)]
+use leptos::*;
+use leptos_router::*;
+use serde::{Deserialize, Serialize};
+
+use crate::types::ship::ShipsByCountry;
+
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 pub struct GameState {
     pub scale: GameScale,
     pub ships: ShipsByCountry,
 }
-#[component]
-pub fn GameStateComp(state: GameState) -> impl IntoView {
-    view!{
-        <div class="p-4 m-8 text-center">
-            <GameScaleComp scale=state.scale/>
-            <ShipsByCountryTableComp ships=state.ships />
-        </div>
+
+impl GameState {
+    pub fn is_set(&self) -> bool {
+        match self.scale {
+            GameScale::UNSET => false,
+            _ => true,
+        }
     }
 }
 
+#[derive(Params, PartialEq)]
+pub struct CountryParams {
+    pub country: Country,
+}
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default, PartialEq, Copy)]
 pub enum Country {
     #[default]
+    NONE,
     USA,
     GB,
     FR,
@@ -29,6 +38,24 @@ pub enum Country {
     JPN,
     IT,
     GER,
+}
+
+impl FromStr for Country {
+    type Err = crate::SPError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().to_lowercase().as_str() {
+            "" => Ok(Country::NONE),
+            "usa" => Ok(Country::USA),
+            "gb" => Ok(Country::GB),
+            "fr" => Ok(Country::FR),
+            "cn" => Ok(Country::CN),
+            "rus" => Ok(Country::RUS),
+            "jpn" => Ok(Country::JPN),
+            "it" => Ok(Country::IT),
+            "ger" => Ok(Country::GER),
+            &_ => Err(crate::SPError::CatchAll),
+        }
+    }
 }
 
 #[derive(Deserialize, Debug, Clone, Default)]
@@ -41,21 +68,11 @@ pub enum ShipType {
     CARRIER,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default, PartialEq, Eq)]
 pub enum GameScale {
     #[default]
+    UNSET,
     SM,
     MD,
     LG,
-}
-#[component]
-pub fn GameScaleComp(scale: GameScale) -> impl IntoView {
-    let string = match scale {
-        GameScale::SM => "Small",
-        GameScale::MD => "Medium",
-        GameScale::LG => "Large",
-    };
-    view!{
-        <h2>Game Scale: {string}</h2> 
-    }
 }

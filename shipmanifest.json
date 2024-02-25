@@ -1,7 +1,7 @@
 {
     "scale": "SM",
     "ships": {
-        "usa": [
+        "USA": [
             {
                 "name": "Ship 1",
                 "ship_class": "Destroyer",
@@ -88,7 +88,7 @@
                 "turn_taken": false
             }
         ],
-        "gb": [
+        "GB": [
             {
                 "name": "Ship 9",
                 "ship_class": "Destroyer",
@@ -119,10 +119,10 @@
                 "turn_taken": false
             }
         ],
-        "fr": [],
-        "cn": [],
-        "rus": [],
-        "jpn": [
+        "FR": [],
+        "CN": [],
+        "RUS": [],
+        "JPN": [
             {
                 "name": "Ship 8",
                 "ship_class": "Destroyer",
@@ -171,7 +171,7 @@
                 "turn_taken": false
             }
         ],
-        "it": [],
-        "ger": []
+        "IT": [],
+        "GER": []
     }
 }
