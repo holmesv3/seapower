@@ -1,10 +1,11 @@
 use leptos::*;
 use serde::{Deserialize, Serialize};
 
+use std::collections::HashMap;
 use crate::types::gun::Gun;
 use crate::types::util::Country;
 
-#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default, PartialEq)]
 pub struct Ship {
     pub name: String,
     pub ship_class: String,
@@ -66,30 +67,66 @@ pub struct ShipsByCountry {
     pub it: Option<Vec<Ship>>,
     pub ger: Option<Vec<Ship>>,
 }
-#[component]
-pub fn ShipsByCountryTableComp(ships: ShipsByCountry) -> impl IntoView {
-    fn table_row(ship: Ship) -> impl IntoView {
-        view! {
-            <tr>
-                <td>{ship.name}</td>
-                <td>{ship.status}</td>
-                <td>{ship.turn_taken}</td>
-            </tr>
+
+impl ShipsByCountry {
+    pub fn get_hash(&self) -> HashMap<Country, Vec<Ship>> {
+        let mut hash = HashMap::new();
+        if self.usa.is_some() {
+            hash.insert(Country::USA, self.usa.as_ref().unwrap().clone());
         }
+        if self.gb.is_some() {
+            hash.insert(Country::GB, self.gb.as_ref().unwrap().clone());
+        }
+        if self.fr.is_some() {
+            hash.insert(Country::FR, self.fr.as_ref().unwrap().clone());
+        }
+        if self.cn.is_some() {
+            hash.insert(Country::CN, self.cn.as_ref().unwrap().clone());
+        }
+        if self.rus.is_some() {
+            hash.insert(Country::RUS, self.rus.as_ref().unwrap().clone());
+        }
+        if self.jpn.is_some() {
+            hash.insert(Country::JPN, self.jpn.as_ref().unwrap().clone());
+        }
+        if self.it.is_some() {
+            hash.insert(Country::IT, self.it.as_ref().unwrap().clone());
+        }
+        if self.ger.is_some() {
+            hash.insert(Country::GER, self.ger.as_ref().unwrap().clone());
+        }
+        hash
     }
-
-    view! {
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Health</th>
-                <th>Turn Taken</th>
-            </tr>
-            {ships.usa.unwrap().into_iter().map(|ship| table_row(ship)).collect_view()}
-
-        </table>
+    pub fn get_keys(&self) -> Vec<Country> {
+        let mut present_ships = vec![];
+        if self.usa.is_some() {
+            present_ships.push(Country::USA);
+        }
+        if self.gb.is_some() {
+            present_ships.push(Country::GB);
+        }
+        if self.fr.is_some() {
+            present_ships.push(Country::FR);
+        }
+        if self.cn.is_some() {
+            present_ships.push(Country::CN);
+        }
+        if self.rus.is_some() {
+            present_ships.push(Country::RUS);
+        }
+        if self.jpn.is_some() {
+            present_ships.push(Country::JPN);
+        }
+        if self.it.is_some() {
+            present_ships.push(Country::IT);
+        }
+        if self.ger.is_some() {
+            present_ships.push(Country::GER);
+        }
+        present_ships
     }
 }
+
 
 // class Side:
 

@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use std::string::ToString;
 
 use leptos::*;
 use leptos_router::*;
@@ -26,7 +27,7 @@ pub struct CountryParams {
     pub country: Country,
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone, Default, PartialEq, Copy)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default, PartialEq, Copy, Hash, Eq)]
 pub enum Country {
     #[default]
     NONE,
@@ -54,6 +55,21 @@ impl FromStr for Country {
             "it" => Ok(Country::IT),
             "ger" => Ok(Country::GER),
             &_ => Err(crate::SPError::CatchAll),
+        }
+    }
+}
+impl ToString for Country {
+    fn to_string(&self) -> String {
+        match self {
+            Country::NONE => "NONE".to_string(),
+            Country::USA => "USA".to_string(),
+            Country::GB => "GB".to_string(),
+            Country::FR => "FR".to_string(),
+            Country::CN => "CN".to_string(),
+            Country::RUS => "RUS".to_string(),
+            Country::JPN => "JPN".to_string(),
+            Country::IT => "IT".to_string(),
+            Country::GER => "GER".to_string(),
         }
     }
 }

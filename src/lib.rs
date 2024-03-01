@@ -3,7 +3,6 @@ use leptos_meta::*;
 use leptos_router::*;
 use thiserror::Error;
 // Modules
-mod components;
 mod pages;
 mod types;
 
@@ -24,12 +23,10 @@ pub enum SPError {
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
-    let (get_state, set_state) = create_signal(GameState::default());
-    let (get_selected, set_selected) = create_signal(false);
-    provide_context(get_selected);
-    provide_context(set_selected);
-    provide_context(get_state);
-    provide_context(set_state);
+    let rw_glob_state = create_rw_signal(GameState::default());
+    let rw_glob_selected = create_rw_signal(false);
+    provide_context(rw_glob_state);
+    provide_context(rw_glob_selected);
     view! {
         <Html lang="en" dir="ltr" attr:data-theme="light"/>
 
@@ -62,7 +59,8 @@ pub fn App() -> impl IntoView {
             <Router>
                 <Routes>
                     <Route path="/" view=Home/>
-                    <Route path="/game" view=InitGame/>
+                    <Route path="/init_game" view=InitGame/>
+                    <Route path="/play_game" view=Home/>
                 </Routes>
             </Router>
 
@@ -85,7 +83,7 @@ pub fn Home() -> impl IntoView {
                     <p>"This is the home page, which isn't much"</p>
                 </div>
                 <div class="mx-auto p-4 space-y-4">
-                    <a href="/game">
+                    <a href="/init_game">
                         <button class="btn-green">"Start a Game"</button>
                     </a>
                 </div>
