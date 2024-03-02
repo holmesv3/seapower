@@ -65,7 +65,6 @@ pub fn GameStateComp(state: RwSignal<GameState>) -> impl IntoView {
         <div class="p-4 m-8 text-center mx-auto">
             <GameScaleComp scale=state().scale/>
             <div>
-                // <ShipsByCountryTableComp table_map={hash.clone()}/>
                 <ShipsByCountryTableTabs get_table=get_map get_keys=present_ships/>
             </div>
         </div>
@@ -81,27 +80,6 @@ pub fn GameScaleComp(scale: GameScale) -> impl IntoView {
         GameScale::LG => "Large",
     };
     view! { <h2 class="mx-auto">Game Scale: {string}</h2> }
-}
-
-#[component]
-pub fn ShipsByCountryTableComp(table_map: HashMap::<Country, Vec<Ship>>) -> impl IntoView {
-    table_map.iter().map(|(k, v)| {
-        view! {
-            <div class="text-center">
-                {k.to_string()} Ships <table class="mx-auto">
-                    <tr>
-                        <th>Name</th>
-                        <th>Health</th>
-                        <th>Turn Taken</th>
-                    </tr>
-
-                    {v.clone().into_iter().map(|ship| ship_table_row(ship)).collect_view()}
-
-                </table> <br/>
-            </div>
-        }
-    }).collect_view()
-    
 }
 
 #[component]
@@ -131,36 +109,42 @@ pub fn ShipsByCountryTableTabs(
     };
     
     let table = move || {
-        get_table()[&get_active()]
-            .iter()
-            .map(|ship| ship_table_row(ship.clone()))
-            .collect_view()
-    };
+        let ships = &get_table()[&get_active()];
+        init_ships_table(ships)};
     view! {
         <div class="tab">{tabs}</div>
         <div class="tabContent active">
             <div class="text-center">
-                {active_str} Ships <table class="mx-auto">
-                    <tr>
-                        <th>Name</th>
-                        <th>Health</th>
-                        <th>Turn Taken</th>
-                    </tr>
-                    {table}
-                </table> <br/>
+                {active_str} Ships 
+                {table}
+                <br/>
             </div>
         </div>
     }
     
 }
 
-pub fn ship_table_row(ship: Ship) -> impl IntoView {
-    view! {
-        <tr>
-            <td>{ship.name}</td>
-            <td>{ship.status}</td>
-            <td>{ship.turn_taken}</td>
-        </tr>
-    }
+pub fn init_ships_table(ships: &Vec<Ship>) -> impl IntoView {
+    let table_for_ships = ships
+            .iter()
+            .map(|ship| view!{
+                <tr>
+                    <td>{ship.name.clone()}</td>
+                    <td>{ship.status}</td>
+                    <td>{ship.turn_taken}</td>
+                </tr>
+            })
+            .collect_view();
+    view!{
+        <table class="mx-auto">
+            <tr>
+                <th>Name</th>
+                <th>Health</th>
+                <th>Turn Taken</th>
+            </tr>
+            {table_for_ships}
+        </table>
+    } 
 }
+
 

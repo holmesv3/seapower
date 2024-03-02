@@ -127,110 +127,179 @@ impl ShipsByCountry {
     }
 }
 
+pub struct GoodGuys {   
+    pub usa: Option<Vec<Ship>>,
+    pub gb: Option<Vec<Ship>>,
+    pub fr: Option<Vec<Ship>>,
+    pub cn: Option<Vec<Ship>>,
+    pub rus: Option<Vec<Ship>>,
+}
+impl GoodGuys {
+    pub fn from_ships_by_country(ships: &ShipsByCountry) -> Self {
+        Self {
+            usa: ships.usa.clone(),
+            gb: ships.gb.clone(),
+            fr: ships.fr.clone(),
+            cn: ships.cn.clone(),
+            rus: ships.rus.clone(),
+        }
+    }
+    pub fn get_hash(&self) -> HashMap<Country, Vec<Ship>> {
+        let mut good_hash = HashMap::new();
+        if self.usa.is_some() {
+            good_hash.insert(Country::USA, self.usa.as_ref().unwrap().clone());
+        }
+        if self.gb.is_some() {
+            good_hash.insert(Country::GB, self.gb.as_ref().unwrap().clone());
+        }
+        if self.fr.is_some() {
+            good_hash.insert(Country::FR, self.fr.as_ref().unwrap().clone());
+        }
+        if self.cn.is_some() {
+            good_hash.insert(Country::CN, self.cn.as_ref().unwrap().clone());
+        }
+        if self.rus.is_some() {
+            good_hash.insert(Country::RUS, self.rus.as_ref().unwrap().clone());
+        }
+        good_hash
+    }
+    pub fn get_keys(&self) -> Vec<Country> {
+        let mut good_present_ships = vec![];
+        if self.usa.is_some() {
+            good_present_ships.push(Country::USA);
+        }
+        if self.gb.is_some() {
+            good_present_ships.push(Country::GB);
+        }
+        if self.fr.is_some() {
+            good_present_ships.push(Country::FR);
+        }
+        if self.cn.is_some() {
+            good_present_ships.push(Country::CN);
+        }
+        if self.rus.is_some() {
+            good_present_ships.push(Country::RUS);
+        }
+        good_present_ships
+    }
+    pub fn get_all_ships(&self) -> Vec<Ship> {
+        let mut good_present_ships = vec![];
+        if self.usa.is_some() {
+            for ship in self.usa.as_ref().unwrap().iter()
+            {
+                good_present_ships.push(ship.clone());
+            };
+        }
+        if self.gb.is_some() {
+            for ship in self.gb.as_ref().unwrap().iter()
+            {
+                good_present_ships.push(ship.clone());
+            };
+        }
+        if self.fr.is_some() {
+            for ship in self.fr.as_ref().unwrap().iter()
+            {
+                good_present_ships.push(ship.clone());
+            };
+        }
+        if self.cn.is_some() {
+            for ship in self.cn.as_ref().unwrap().iter()
+            {
+                good_present_ships.push(ship.clone());
+            };
+        }
+        if self.rus.is_some() {
+            for ship in self.rus.as_ref().unwrap().iter()
+            {
+                good_present_ships.push(ship.clone());
+            };
+        }
+        good_present_ships
+    }
+}
 
-// class Side:
+pub struct BadGuys{
+    pub jpn: Option<Vec<Ship>>,
+    pub it: Option<Vec<Ship>>,
+    pub ger: Option<Vec<Ship>>,
+}
 
-//     _all: list[Ship]
+impl BadGuys {
+    pub fn from_ships_by_country(ships: &ShipsByCountry) -> Self {
+        Self {
+            jpn: ships.jpn.clone(),
+            it: ships.it.clone(),
+            ger: ships.ger.clone(),
+        }    
+    }
+    pub fn get_hash(&self) -> HashMap<Country, Vec<Ship>> {
+        let mut bad_hash = HashMap::new();
+        if self.jpn.is_some() {
+            bad_hash.insert(Country::JPN, self.jpn.as_ref().unwrap().clone());
+        }
+        if self.it.is_some() {
+            bad_hash.insert(Country::IT, self.it.as_ref().unwrap().clone());
+        }
+        if self.ger.is_some() {
+            bad_hash.insert(Country::GER, self.ger.as_ref().unwrap().clone());
+        }
+        bad_hash
+    }
+    pub fn get_keys(&self) -> Vec<Country> {
+        let mut bad_present_ships = vec![];
+        if self.jpn.is_some() {
+            bad_present_ships.push(Country::JPN);
+        }
+        if self.it.is_some() {
+            bad_present_ships.push(Country::IT);
+        }
+        if self.ger.is_some() {
+            bad_present_ships.push(Country::GER);
+        }
+        bad_present_ships
+    }
+    pub fn get_all_ships(&self) -> Vec<Ship> {
+        let mut bad_present_ships = vec![];
+        if self.jpn.is_some() {
+            for ship in self.jpn.as_ref().unwrap().iter()
+            {
+                bad_present_ships.push(ship.clone());
+            }
+        }
+        if self.it.is_some() {
+            for ship in self.it.as_ref().unwrap().iter()
+            {
+                bad_present_ships.push(ship.clone());
+            }
+        }
+        if self.ger.is_some() {
+            for ship in self.ger.as_ref().unwrap().iter()
+            {
+                bad_present_ships.push(ship.clone());
+            }
+        }
+        bad_present_ships
+    }
+}
 
-//     @staticmethod
-//     def from_ships(ships: list[Ship]):
-//         raise NotImplementedError
 
-//     @staticmethod
-//     def from_ships_by_country(ships: ShipsByCountry):
-//         raise NotImplementedError
+pub struct ShipsBySide {
+    pub good_guys: GoodGuys,
+    pub bad_guys: BadGuys,
+}
 
-//     def get_all(self) -> list[Ship]:
-//         return self._all;
-
-//     def check_all(self) -> list[Ship]:
-//         """Return all ships which have actions remaning"""
-//         out = []
-//         ships = self.get_all()
-//         for ship in ships:
-//             if ship.status:
-//                 out.append(ship)
-
-//         return out
-
-// class GoodGuys(Side):
-//     usa: list[Ship] = []
-//     gb: list[Ship] = []
-//     fr: list[Ship] = []
-//     cn: list[Ship] = []
-//     rus: list[Ship] = []
-
-//     @staticmethod
-//     def from_ships(ships: list[Ship]):
-//         gg = GoodGuys()
-//         for ship in ships:
-//             match ship.country:
-//                 case Country.USA:
-//                     gg.usa.append(ship)
-//                 case Country.GB:
-//                     gg.gb.append(ship)
-//                 case Country.FR:
-//                     gg.fr.append(ship)
-//                 case Country.CN:
-//                     gg.cn.append(ship)
-//                 case Country.RUS:
-//                     gg.rus.append(ship)
-//         gg._all = gg.usa + gg.gb + gg.fr + gg.cn + gg.rus
-//         return gg
-
-//     @staticmethod
-//     def from_ships_by_country(ships: ShipsByCountry):
-//         gg = GoodGuys()
-//         gg.usa = ships.usa
-//         gg.gb = ships.gb
-//         gg.fr = ships.fr
-//         gg.cn = ships.cn
-//         gg.rus = ships.rus
-//         gg._all = gg.usa + gg.gb + gg.fr + gg.cn + gg.rus
-//         return gg
-
-// class BadGuys(Side):
-//     jpn: list[Ship] = []
-//     it: list[Ship] = []
-//     ger: list[Ship] = []
-
-//     @staticmethod
-//     def from_ships(ships: list[Ship]):
-//         bg = BadGuys()
-//         for ship in ships:
-//             match ship.country:
-//                 case Country.JPN:
-//                     bg.jpn.append(ship)
-//                 case Country.IT:
-//                     bg.it.append(ship)
-//                 case Country.GER:
-//                     bg.ger.append(ship)
-//         bg._all = bg.jpn + bg.it + bg.ger
-//         return bg
-
-//     @staticmethod
-//     def from_ships_by_country(ships: ShipsByCountry):
-//         bg = BadGuys()
-//         bg.jpn = ships.jpn
-//         bg.it = ships.it
-//         bg.ger = ships.ger
-//         bg._all = bg.jpn + bg.it + bg.ger
-//         return bg
-
-// class ShipsBySide:
-//     good_guys: GoodGuys
-//     bad_guys: BadGuys
-
-//     @staticmethod
-//     def from_ships(ships: list[Ship]):
-//         sbs = ShipsBySide()
-//         sbs.good_guys = GoodGuys(ships)
-//         sbs.bad_guys = BadGuys(ships)
-//         return sbs
-
-//     @staticmethod
-//     def from_ships_by_country(ships: ShipsByCountry):
-//         sbs = ShipsBySide()
-//         sbs.good_guys = GoodGuys(ships)
-//         sbs.bad_guys = BadGuys(ships)
-//         return sbs
+impl ShipsBySide {
+    pub fn from_ships_by_country(ships: &ShipsByCountry) -> Self {
+        Self {
+            good_guys: GoodGuys::from_ships_by_country(ships),
+            bad_guys: BadGuys::from_ships_by_country(ships),
+        }
+    }
+    
+    pub fn get_hash(&self) -> (HashMap<Country, Vec<Ship>>, HashMap<Country, Vec<Ship>>) {
+        (self.good_guys.get_hash(), self.bad_guys.get_hash())
+    }
+    pub fn get_keys(&self) -> (Vec<Country>, Vec<Country>) {
+        (self.good_guys.get_keys(), self.bad_guys.get_keys())
+    }
+}

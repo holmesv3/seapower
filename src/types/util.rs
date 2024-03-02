@@ -73,8 +73,32 @@ impl ToString for Country {
         }
     }
 }
+#[derive(Deserialize, Debug, Clone, Eq, PartialEq, Copy)]
+pub enum Side {
+    AXIS,
+    ALLIES,
+}
+impl FromStr for Side {
+    type Err = crate::SPError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().to_lowercase().as_str() {
+            "axis" => Ok(Side::AXIS),
+            "allies" => Ok(Side::ALLIES),
+            &_ => Err(crate::SPError::CatchAll),
+        }
+    }
+}
+impl ToString for Side {
+    fn to_string(&self) -> String {
+        match self {
+            Side::AXIS => "Axis".to_string(),
+            Side::ALLIES => "Allies".to_string(),
+        }
+    }
+}
 
-#[derive(Deserialize, Debug, Clone, Default)]
+
+#[derive(Deserialize, Debug, Clone, Default, Copy)]
 pub enum ShipType {
     #[default]
     DESTROYER,

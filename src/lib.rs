@@ -5,10 +5,12 @@ use thiserror::Error;
 // Modules
 mod pages;
 mod types;
+mod components;
 
 use serde::{Deserialize, Serialize};
 
 use pages::init_game::InitGame;
+use pages::play_game::PlayGame;
 use types::util::GameState;
 #[derive(Debug, Error)]
 pub enum SPError {
@@ -60,7 +62,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="/" view=Home/>
                     <Route path="/init_game" view=InitGame/>
-                    <Route path="/play_game" view=Home/>
+                    <Route path="/play_game" view=PlayGame/>
                 </Routes>
             </Router>
 
