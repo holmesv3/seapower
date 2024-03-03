@@ -7,8 +7,6 @@ mod pages;
 mod types;
 mod components;
 
-use serde::{Deserialize, Serialize};
-
 use pages::init_game::InitGame;
 use pages::play_game::PlayGame;
 use types::util::GameState;
@@ -36,7 +34,7 @@ pub fn App() -> impl IntoView {
         <Title text="Welcome to Leptos CSR"/>
 
         // injects metadata in the <head> of the page
-        <Meta charset="UTF-8"/>
+        <Meta charset="utf-8"/>
         <Meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <ErrorBoundary fallback=|errors| {

@@ -31,12 +31,12 @@ pub fn InitGame() -> impl IntoView {
                     "Continue"
                 </a>
                 <GameStateComp state=state/>
-                </Show>
-                </div>
-            }
-        }
+            </Show>
+        </div>
+    }
+}
         
-pub fn load_default() {
+fn load_default() {
     // thanks to https://tailwindcomponents.com/component/blue-buttons-example for the showcase layout
     let set_state = use_context::<RwSignal<GameState>>().unwrap();
     let set_selected = use_context::<RwSignal<bool>>().unwrap();
@@ -46,17 +46,17 @@ pub fn load_default() {
     set_selected.set(true);
 }
 
-pub fn load_save() {
+fn load_save() {
     // thanks to https://tailwindcomponents.com/component/blue-buttons-example for the showcase layout
     log::warn!("Haven't implemented loading from save yet");
-    let set_state = use_context::<RwSignal<GameState>>().unwrap();
-    let set_selected = use_context::<RwSignal<bool>>().unwrap();
-    set_selected.set(false);
+    // let set_state = use_context::<RwSignal<GameState>>().unwrap();
+    // let set_selected = use_context::<RwSignal<bool>>().unwrap();
+    // set_selected.set(false);
 }
 
 
 #[component]
-pub fn GameStateComp(state: RwSignal<GameState>) -> impl IntoView {
+fn GameStateComp(state: RwSignal<GameState>) -> impl IntoView {
 
     let get_map = create_memo(move |_| state.get().ships.get_hash());
     let present_ships = create_memo(move |_| state.get().ships.get_keys());
@@ -72,7 +72,7 @@ pub fn GameStateComp(state: RwSignal<GameState>) -> impl IntoView {
 }
 
 #[component]
-pub fn GameScaleComp(scale: GameScale) -> impl IntoView {
+fn GameScaleComp(scale: GameScale) -> impl IntoView {
     let string = match scale {
         GameScale::UNSET => "Unset",
         GameScale::SM => "Small",
@@ -83,7 +83,7 @@ pub fn GameScaleComp(scale: GameScale) -> impl IntoView {
 }
 
 #[component]
-pub fn ShipsByCountryTableTabs(
+fn ShipsByCountryTableTabs(
     get_table: Memo<HashMap::<Country, Vec<Ship>>>,
     get_keys: Memo<Vec<Country>>
 ) -> impl IntoView {
@@ -114,20 +114,15 @@ pub fn ShipsByCountryTableTabs(
     view! {
         <div class="tab">{tabs}</div>
         <div class="tabContent active">
-            <div class="text-center">
-                {active_str} Ships 
-                {table}
-                <br/>
-            </div>
+            <div class="text-center">{active_str} Ships {table} <br/></div>
         </div>
     }
-    
 }
 
-pub fn init_ships_table(ships: &Vec<Ship>) -> impl IntoView {
+fn init_ships_table(ships: &Vec<Ship>) -> impl IntoView {
     let table_for_ships = ships
             .iter()
-            .map(|ship| view!{
+            .map(|ship| view! {
                 <tr>
                     <td>{ship.name.clone()}</td>
                     <td>{ship.status}</td>
@@ -135,7 +130,7 @@ pub fn init_ships_table(ships: &Vec<Ship>) -> impl IntoView {
                 </tr>
             })
             .collect_view();
-    view!{
+    view! {
         <table class="mx-auto">
             <tr>
                 <th>Name</th>

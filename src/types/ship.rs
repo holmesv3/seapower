@@ -127,24 +127,25 @@ impl ShipsByCountry {
     }
 }
 
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct GoodGuys {   
-    pub usa: Option<Vec<Ship>>,
-    pub gb: Option<Vec<Ship>>,
-    pub fr: Option<Vec<Ship>>,
-    pub cn: Option<Vec<Ship>>,
-    pub rus: Option<Vec<Ship>>,
+    pub usa: Option<Vec<RwSignal<Ship>>>,
+    pub gb: Option<Vec<RwSignal<Ship>>>,
+    pub fr: Option<Vec<RwSignal<Ship>>>,
+    pub cn: Option<Vec<RwSignal<Ship>>>,
+    pub rus: Option<Vec<RwSignal<Ship>>>,
 }
 impl GoodGuys {
     pub fn from_ships_by_country(ships: &ShipsByCountry) -> Self {
         Self {
-            usa: ships.usa.clone(),
-            gb: ships.gb.clone(),
-            fr: ships.fr.clone(),
-            cn: ships.cn.clone(),
-            rus: ships.rus.clone(),
+            usa: make_vec_ship_sig(ships.usa.clone()),
+            gb: make_vec_ship_sig(ships.gb.clone()),
+            fr: make_vec_ship_sig(ships.fr.clone()),
+            cn: make_vec_ship_sig(ships.cn.clone()),
+            rus: make_vec_ship_sig(ships.rus.clone()),
         }
     }
-    pub fn get_hash(&self) -> HashMap<Country, Vec<Ship>> {
+    pub fn get_hash(&self) -> HashMap<Country, Vec<RwSignal<Ship>>> {
         let mut good_hash = HashMap::new();
         if self.usa.is_some() {
             good_hash.insert(Country::USA, self.usa.as_ref().unwrap().clone());
@@ -182,7 +183,7 @@ impl GoodGuys {
         }
         good_present_ships
     }
-    pub fn get_all_ships(&self) -> Vec<Ship> {
+    pub fn get_all_ships(&self) -> Vec<RwSignal<Ship>> {
         let mut good_present_ships = vec![];
         if self.usa.is_some() {
             for ship in self.usa.as_ref().unwrap().iter()
@@ -218,21 +219,31 @@ impl GoodGuys {
     }
 }
 
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct BadGuys{
-    pub jpn: Option<Vec<Ship>>,
-    pub it: Option<Vec<Ship>>,
-    pub ger: Option<Vec<Ship>>,
+    pub jpn: Option<Vec<RwSignal<Ship>>>,
+    pub it: Option<Vec<RwSignal<Ship>>>,
+    pub ger: Option<Vec<RwSignal<Ship>>>,
+}
+
+fn make_vec_ship_sig(ships: Option<Vec<Ship>>) -> Option<Vec<RwSignal<Ship>>> {
+    if ships.is_some()
+    {
+        return Some(ships.unwrap().into_iter().map(|ship| create_rw_signal(ship)).collect())
+    }
+    None
 }
 
 impl BadGuys {
+    
     pub fn from_ships_by_country(ships: &ShipsByCountry) -> Self {
         Self {
-            jpn: ships.jpn.clone(),
-            it: ships.it.clone(),
-            ger: ships.ger.clone(),
+            jpn: make_vec_ship_sig(ships.jpn.clone()),
+            it: make_vec_ship_sig(ships.it.clone()),
+            ger: make_vec_ship_sig(ships.ger.clone()),
         }    
     }
-    pub fn get_hash(&self) -> HashMap<Country, Vec<Ship>> {
+    pub fn get_hash(&self) -> HashMap<Country, Vec<RwSignal<Ship>>> {
         let mut bad_hash = HashMap::new();
         if self.jpn.is_some() {
             bad_hash.insert(Country::JPN, self.jpn.as_ref().unwrap().clone());
@@ -258,7 +269,7 @@ impl BadGuys {
         }
         bad_present_ships
     }
-    pub fn get_all_ships(&self) -> Vec<Ship> {
+    pub fn get_all_ships(&self) -> Vec<RwSignal<Ship>> {
         let mut bad_present_ships = vec![];
         if self.jpn.is_some() {
             for ship in self.jpn.as_ref().unwrap().iter()
@@ -282,7 +293,7 @@ impl BadGuys {
     }
 }
 
-
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct ShipsBySide {
     pub good_guys: GoodGuys,
     pub bad_guys: BadGuys,
@@ -296,7 +307,7 @@ impl ShipsBySide {
         }
     }
     
-    pub fn get_hash(&self) -> (HashMap<Country, Vec<Ship>>, HashMap<Country, Vec<Ship>>) {
+    pub fn get_hash(&self) -> (HashMap<Country, Vec<RwSignal<Ship>>>, HashMap<Country, Vec<RwSignal<Ship>>>) {
         (self.good_guys.get_hash(), self.bad_guys.get_hash())
     }
     pub fn get_keys(&self) -> (Vec<Country>, Vec<Country>) {
