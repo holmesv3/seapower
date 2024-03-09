@@ -5,6 +5,7 @@ use std::str::FromStr;
 use std::collections::HashMap;
 
 use crate::types::ship::*;
+use crate::types::gun::*;
 use crate::types::util::{GameScale, GameState, Country, Side};
 
 #[component]
@@ -25,8 +26,8 @@ pub fn GoodBadTabs(ships: ShipsBySide) -> impl IntoView {
     let allies = ships.good_guys.clone();
     let axis = ships.bad_guys.clone();
     
-    let active_ship = create_rw_signal::<Option<Ship>>(None);
-    let target_ship = create_rw_signal::<Option<Ship>>(None);
+    let active_ship = create_rw_signal::<Option<RwSignal<Ship>>>(None);
+    let target_ship = create_rw_signal::<Option<RwSignal<Ship>>>(None);
     
     
     // Set up which side is being played
@@ -127,7 +128,7 @@ pub fn GoodBadTabs(ships: ShipsBySide) -> impl IntoView {
 fn ShipsByCountryTableTabs(
     hashmap: ReadSignal<HashMap::<Country, Vec<RwSignal<Ship>>>>,
     keys: ReadSignal<Vec<Country>>,
-    active_ship: RwSignal<Option<Ship>>
+    active_ship: RwSignal<Option<RwSignal<Ship>>>
 ) -> impl IntoView {
     
     let init_active = keys()[0];
@@ -158,7 +159,7 @@ let table = move || {
         </div>
     }
 }
-fn play_ships_table(ships: Vec<RwSignal<Ship>>, active_ship: RwSignal<Option<Ship>>) -> impl IntoView {
+fn play_ships_table(ships: Vec<RwSignal<Ship>>, active_ship: RwSignal<Option<RwSignal<Ship>>>) -> impl IntoView {
     let table_for_ships = ships
     .into_iter()
     .map(|ship| {
@@ -167,7 +168,7 @@ fn play_ships_table(ships: Vec<RwSignal<Ship>>, active_ship: RwSignal<Option<Shi
                 class:unavail=move || ship().turn_taken
                 on:click=move |_| {
                     active_ship.set(None);
-                    active_ship.set(Some(ship()));
+                    active_ship.set(Some(ship));
                 }
             >
 
@@ -191,8 +192,8 @@ view! {
 }
 
 #[component]
-fn ShipCard(ship: RwSignal<Option<Ship>>) -> impl IntoView {
-    let ship = move || ship().unwrap();
+fn ShipCard(ship: RwSignal<Option<RwSignal<Ship>>>) -> impl IntoView {
+    let ship = move || ship().unwrap()();
     view! {
         <div class="card p-4 m-2">{ship().name}</div>
 
@@ -217,25 +218,25 @@ fn ShipCard(ship: RwSignal<Option<Ship>>) -> impl IntoView {
             </div>
 
             <section class="grid grid-cols-3 gap-4 m-1">
-                <div class="variant-glass-primary card">
+                <div class="card border-rounded">
                     <header class="card-header">Primary Gun</header>
                     <hr/>
-                    // <GunCard gun={ship().primary_gun}/>
+                    <GunCard gun={ship().primary_gun}/>
                     <div class="p-4"></div>
                 </div>
                 <Show when=move || ship().secondary_gun.is_some()>
-                    <div class="variant-glass-secondary card">
+                    <div class="card">
                         <header class="card-header">Secondary Gun</header>
                         <hr/>
-                        // <GunCard gun={ship().secondary_gun}/>
+                        <GunCard gun={ship().secondary_gun.unwrap()}/>
                         <div class="p-4"></div>
                     </div>
                 </Show>
                 <Show when=move || ship().tertiary_gun.is_some()>
-                    <div class="variant-glass-tertiary card">
+                    <div class="card">
                         <header class="card-header">Tertiary Gun</header>
                         <hr/>
-                        // <GunCard gun={ship().tertiary_gun}/>
+                        <GunCard gun={ship().tertiary_gun.unwrap()}/>
                         <div class="p-4"></div>
                     </div>
                 </Show>
@@ -243,27 +244,44 @@ fn ShipCard(ship: RwSignal<Option<Ship>>) -> impl IntoView {
         </div>
     }
 }
+#[component]
+fn GunCard(gun: Gun) -> impl IntoView {
+    view!(
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-1">
+            <p>gun_size: {gun.gun_size}</p>
+            <p>n_gun: {gun.n_gun}</p>
+            <p>shell_weight: {gun.shell_weight}</p>
+            <p>range: {gun.range}</p>
+            <p>SRM: {gun.srm}</p>
+            <p>ammo: {gun.ammo}</p>
+        </section>
+    )
+}
 
 #[component]
-fn AttackButton(a: RwSignal<Option<Ship>>, t: RwSignal<Option<Ship>>) -> impl IntoView {
+fn AttackButton(a: RwSignal<Option<RwSignal<Ship>>>, t: RwSignal<Option<RwSignal<Ship>>>) -> impl IntoView {
    
-    let unavail = move || a().unwrap().turn_taken;
+    let l_a = a().unwrap();
+    let l_t = t().unwrap();
     
-    let unavail_btn = move || view! { <button class="btn gray">"Already fired"</button> };
+    let unavail = move || l_a().turn_taken;
+    
+    let unavail_btn = move || view! { <button class="btn gray">{l_a().name} already fired</button> };
     
     let fire_button = move || view! {
         <button
             class="btn red"
             on:click=move |_| {
                 log::info!("HERE I AM");
-                log::info!("T: {}", t.with(| s | s.as_ref().unwrap().status));
-                log::info!("A: {}", a.with(| s | s.as_ref().unwrap().turn_taken));
+                log::info!("T: {}", l_t.with(| s | s.status));
+                log::info!("A: {}", l_a.with(| s | s.turn_taken));
                 log::info!("UNAVIL: {}", unavail());
-                t.update(|s| s.as_mut().unwrap().status -= 1.0);
-                a.update(|s| s.as_mut().unwrap().turn_taken = true);
-                log::info!("T: {}", t.with(| s | s.as_ref().unwrap().status));
-                log::info!("A: {}", a.with(| s | s.as_ref().unwrap().turn_taken));
+                l_t.update(|s| s.status -= 1.0);
+                l_a.update(|s| s.turn_taken = true);
+                log::info!("T: {}", l_t.with(| s | s.status));
+                log::info!("A: {}", l_a.with(| s | s.turn_taken));
                 log::info!("UNAVIL: {}", unavail());
+                t.set(None);
             }
         >
             "FIRE"
