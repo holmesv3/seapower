@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use crate::types::ship::*;
 use crate::types::gun::*;
 use crate::types::util::{GameScale, GameState, Country, Side};
+use crate::components::buttons::*;
 
 #[component]
 pub fn PlayGame() -> impl IntoView {
@@ -14,7 +15,7 @@ pub fn PlayGame() -> impl IntoView {
     let state = use_context::<RwSignal<GameState>>().unwrap();
     let ships_by_side = move || ShipsBySide::from_ships_by_country(&state().ships.clone());
     view! {
-        <div class="base-div text-center">
+        <div class="text-center">
             <GoodBadTabs ships=ships_by_side()/>
         </div>
     }
@@ -83,13 +84,13 @@ pub fn GoodBadTabs(ships: ShipsBySide) -> impl IntoView {
             />
         </Show>
         // Active ship
-        <div class="mx-auto green">
-            <Show when=move || active_ship().is_some()>
+        <Show when=move || active_ship().is_some()>
+            <div class="m-4 p-2 p-x-6 border-2 border-emerald-400/80 rounded-2xl bg-gradient-to-tl from-emerald-600/40 to-emerald-800/40">
                 <h1 class="h1">"Current active ship"</h1>
-                <ShipCard ship=active_ship/>
-            </Show>
+                <ShipCard ship={active_ship().unwrap()}/>
+            </div>
+        </Show>
 
-        </div>
         <br/>
         // Select target ship
         <Show when=move || (active_side() == Side::ALLIES) && active_ship().is_some()>
@@ -109,19 +110,19 @@ pub fn GoodBadTabs(ships: ShipsBySide) -> impl IntoView {
         </Show>
 
         // Show target ship
-        <div class="mx-auto purple">
-            <Show when=move || target_ship().is_some()>
+        <Show when=move || target_ship().is_some()>
+            <div class="m-4 p-2 p-x-6 border-2 border-pink-300/80 rounded-2xl bg-gradient-to-tl from-pink-500/40 to-pink-800/40">
                 <h1 class="h1">"Current target ship"</h1>
-                <ShipCard ship=target_ship/>
-            </Show>
+                <ShipCard ship={target_ship().unwrap()}/>
+            </div>
+        </Show>
 
-        </div>
         <br/>
         <Show when=move || active_ship().is_some() && target_ship().is_some()>
             <h1 class="h1">"Attack the target ship with the current active ship"</h1>
             <AttackButton a=active_ship t=target_ship/>
         </Show>
-    }   
+    }  
 }
 
 #[component]
@@ -169,85 +170,77 @@ fn play_ships_table(ships: Vec<RwSignal<Ship>>, active_ship: RwSignal<Option<RwS
                 on:click=move |_| {
                     active_ship.set(None);
                     active_ship.set(Some(ship));
-                }
-            >
-
+                }>
                 <td>{move || ship().name.clone()}</td>
                 <td>{move || ship().status}</td>
-                <td>{move || ship().turn_taken}</td>
             </tr>
         }
     })
     .collect_view();
-view! {
-    <table class="mx-auto">
-        <tr>
-            <th>Name</th>
-            <th>Health</th>
-            <th>Turn Taken</th>
-        </tr>
-        {table_for_ships}
-    </table>
-} 
+    view! {
+        <table class="mx-auto">
+            <tr>
+                <th>Name</th>
+                <th>Health</th>
+            </tr>
+            {table_for_ships}
+        </table>
+    }
 }
 
 #[component]
-fn ShipCard(ship: RwSignal<Option<RwSignal<Ship>>>) -> impl IntoView {
-    let ship = move || ship().unwrap()();
-    view! {
-        <div class="card p-4 m-2">{ship().name}</div>
-
-        <div class="card p-4 m-6 shadow-xl" data-popup=ship().name>
-            <div class="arrow bg-surface-100-800-token"></div>
-            <div class="grid grid-cols-3 gap-2 m-1">
-                <p>ship_class: {ship().ship_class}</p>
-                <p>DV: {ship().dv}</p>
-                <p>max_speed: {ship().max_speed}</p>
-                <p>status: {ship().status}</p>
-                <p>gun_status: {ship().gun_status}</p>
-                <p>hull_status: {ship().hull_status}</p>
-                <p>torpedo_tubesize: {ship().torpedo_tubesize}</p>
-                <p>n_tube: {ship().n_tube}</p>
-                <p>n_torpedo: {ship().n_torpedo}</p>
-                <p>catapults: {ship().catapults}</p>
-                <p>aircraft_on_board: {ship().aircraft_on_board}</p>
-                <p>aircraft_in_air: {ship().aircraft_in_air}</p>
-                <p>depth_charge: {ship().depth_charge}</p>
-                <p>anti_aircraft: {ship().anti_aircraft}</p>
-                <p>mines: {ship().mines}</p>
-            </div>
-
-            <section class="grid grid-cols-3 gap-4 m-1">
-                <div class="card border-rounded">
-                    <header class="card-header">Primary Gun</header>
-                    <hr/>
-                    <GunCard gun={ship().primary_gun}/>
-                    <div class="p-4"></div>
-                </div>
-                <Show when=move || ship().secondary_gun.is_some()>
-                    <div class="card">
-                        <header class="card-header">Secondary Gun</header>
-                        <hr/>
-                        <GunCard gun={ship().secondary_gun.unwrap()}/>
-                        <div class="p-4"></div>
-                    </div>
-                </Show>
-                <Show when=move || ship().tertiary_gun.is_some()>
-                    <div class="card">
-                        <header class="card-header">Tertiary Gun</header>
-                        <hr/>
-                        <GunCard gun={ship().tertiary_gun.unwrap()}/>
-                        <div class="p-4"></div>
-                    </div>
-                </Show>
-            </section>
+fn ShipCard(ship: RwSignal<Ship>) -> impl IntoView {
+    let ship = move || ship();
+    let gc_class = "m-4 p-4 border-lg border-slate-300/80 rounded-2xl bg-slate-600/50";
+    view! (
+        <div class="p-4 m-2">{ship().name}</div>
+        <div class="arrow bg-surface-100-800-token"></div>
+        <div class="grid grid-cols-3 gap-2 m-1">
+            <p>ship_class: {ship().ship_class}</p>
+            <p>DV: {ship().dv}</p>
+            <p>max_speed: {ship().max_speed}</p>
+            <p>status: {ship().status}</p>
+            <p>gun_status: {ship().gun_status}</p>
+            <p>hull_status: {ship().hull_status}</p>
+            <p>torpedo_tubesize: {ship().torpedo_tubesize}</p>
+            <p>n_tube: {ship().n_tube}</p>
+            <p>n_torpedo: {ship().n_torpedo}</p>
+            <p>catapults: {ship().catapults}</p>
+            <p>aircraft_on_board: {ship().aircraft_on_board}</p>
+            <p>aircraft_in_air: {ship().aircraft_in_air}</p>
+            <p>depth_charge: {ship().depth_charge}</p>
+            <p>anti_aircraft: {ship().anti_aircraft}</p>
+            <p>mines: {ship().mines}</p>
         </div>
-    }
+
+        <section class="grid grid-cols-3 gap-4 m-1">
+            <div class={gc_class}>
+                <header class="h2">Primary Gun</header>
+                <hr/>
+                <GunCard gun={ship().primary_gun}/>
+            </div>
+            <Show when=move || ship().secondary_gun.is_some()>
+                <div class={gc_class}>
+                    <header class="h2">Secondary Gun</header>
+                    <hr/>
+                    <GunCard gun={ship().secondary_gun.unwrap()}/>
+                </div>
+            </Show>
+            <Show when=move || ship().tertiary_gun.is_some()>
+                <div class={gc_class}>
+                    <header class="h2">Tertiary Gun</header>
+                    <hr/>
+                    <GunCard gun={ship().tertiary_gun.unwrap()}/>
+                </div>
+            </Show>
+        </section>
+        
+    )
 }
 #[component]
 fn GunCard(gun: Gun) -> impl IntoView {
-    view!(
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-1">
+    view! {
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-1 rounded-xl">
             <p>gun_size: {gun.gun_size}</p>
             <p>n_gun: {gun.n_gun}</p>
             <p>shell_weight: {gun.shell_weight}</p>
@@ -255,7 +248,7 @@ fn GunCard(gun: Gun) -> impl IntoView {
             <p>SRM: {gun.srm}</p>
             <p>ammo: {gun.ammo}</p>
         </section>
-    )
+    }
 }
 
 #[component]
@@ -266,28 +259,16 @@ fn AttackButton(a: RwSignal<Option<RwSignal<Ship>>>, t: RwSignal<Option<RwSignal
     
     let unavail = move || l_a().turn_taken;
     
-    let unavail_btn = move || view! { <button class="btn gray">{l_a().name} already fired</button> };
+    let unavail_btn = move || view! { <GrayBtn>{l_a().name} already fired</GrayBtn> };
     
     let fire_button = move || view! {
-        <button
-            class="btn red"
-            on:click=move |_| {
-                log::info!("HERE I AM");
-                log::info!("T: {}", l_t.with(| s | s.status));
-                log::info!("A: {}", l_a.with(| s | s.turn_taken));
-                log::info!("UNAVIL: {}", unavail());
-                l_t.update(|s| s.status -= 1.0);
-                l_a.update(|s| s.turn_taken = true);
-                log::info!("T: {}", l_t.with(| s | s.status));
-                log::info!("A: {}", l_a.with(| s | s.turn_taken));
-                log::info!("UNAVIL: {}", unavail());
-                t.set(None);
-            }
-        >
-            "FIRE"
-        </button>
+        <RedBtn on:click=move |_| {
+            l_t.update(|s| s.status -= 1.0);
+            l_a.update(|s| s.turn_taken = true);
+            a.set(Some(l_a));
+            t.set(Some(l_t));
+        }>"FIRE"</RedBtn>
     };
-    
     
     view! {
         <div class="m-4">
@@ -296,5 +277,4 @@ fn AttackButton(a: RwSignal<Option<RwSignal<Ship>>>, t: RwSignal<Option<RwSignal
             </Show>
         </div>
     }
-        
 }

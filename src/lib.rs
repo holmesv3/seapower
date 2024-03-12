@@ -10,6 +10,7 @@ mod components;
 use pages::init_game::InitGame;
 use pages::play_game::PlayGame;
 use types::util::GameState;
+use components::buttons::GreenBtn;
 #[derive(Debug, Error)]
 pub enum SPError {
     #[error("I'm so lazy")]
@@ -76,18 +77,16 @@ pub fn Home() -> impl IntoView {
     */
     view! {
         <Title text="Seapower"/>
-        <main>
-            <div class="base-div">
-                <div class="mx-auto p-8 space-y-8">
-                    <h1 class="h1 text-center">Welcome to Seapower</h1>
-                    <p>"This is the home page, which isn't much"</p>
-                </div>
-                <div class="mx-auto p-4 space-y-4">
-                    <a href="/init_game">
-                        <button class="btn-green">"Start a Game"</button>
-                    </a>
-                </div>
+        <div class="mx-auto text-center">
+            <div class="p-8 space-y-8">
+                <h1 class="h1">Welcome to Seapower</h1>
+                <p>"This is the home page, which isn't much"</p>
             </div>
-        </main>
+            <div class="p-4 space-y-4">
+                <a href="/init_game">
+                    <GreenBtn>"Start a Game"</GreenBtn>
+                </a>
+            </div>
+        </div>
     }
 }

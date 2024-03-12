@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use crate::types::ship::{Ship, ShipsByCountry};
 use crate::types::util::{GameScale, GameState, Country};
 use crate::types::default_state::DEFAULT;
+use crate::components::buttons::*;
 
 #[component]
 pub fn InitGame() -> impl IntoView {
@@ -16,19 +17,21 @@ pub fn InitGame() -> impl IntoView {
     // thanks to https://tailwindcomponents.com/component/blue-buttons-example for the showcase layout
     view! {
         <Title text="Seapower - Start Game"/>
-        <div class="base-div mx-auto p-8 space-y-8">
-            <h1 class="h1 text-center">"Load default or upload save game"</h1>
-            <div class="mx-auto text-center">
-                <button class="m-4 btn-green" on:click=move |_| { load_default() }>
-                    "Load Default"
-                </button>
-                <button class="m-4 btn-purple" on:click=move |_| { load_save() }>
-                    "Upload Save"
-                </button>
+        <div class="text-center mx-auto p-4 space-y-4">
+            <h1 class="h1">"Load default or upload save game"</h1>
+            <div class="mx-auto grid grid-cols-2">
+                <div class="m-4 mx-auto" on:click=move |_| { load_default() }>
+                    <GreenBtn>"Load Default"</GreenBtn>
+                </div>
+                <div class="m-4 mx-auto" on:click=move |_| { load_save() }>
+                    <PurpleBtn>"Upload Save"</PurpleBtn>
+                </div>
             </div>
+        </div>
+        <div class="text-center mx-auto p-4 space-y-4">
             <Show when=move || selected.get() == true>
-                <a class="btn-orange" href="/play_game">
-                    "Continue"
+                <a class="mx-auto" href="/play_game">
+                    <OrangeBtn>"Continue"</OrangeBtn>
                 </a>
                 <GameStateComp state=state/>
             </Show>
